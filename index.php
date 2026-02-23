@@ -64,13 +64,13 @@
                         <?php if ($employee['fired']): ?>
                             <span class="badge fired">Уволен</span>
                         <?php else: ?>
-                            <span class= "badge not fired"></span>
+                            <span class= "badge not-fired"></span>
                         <?php endif; ?>
                     </td>
-                    <td class = "actions">
+                    <td class = "actions-s">
                         <?php if (!$employee['fired']): ?>
-                            <a href="edit.php?id=<?=  $employee['id'] ?>" class ="btn-edit">ред</a>
-                            <a href = "delite.php?id<?= $employee['id'] ?>" class = "btn-del" onclick="return confirm('Уволить сотрудника?')">дел</a>
+                            <a href="edit.php?id=<?=  $employee['id'] ?>" class ="btn-s edit">ред</a>
+                            <a href = "delite.php?id<?= $employee['id'] ?>" class = "btn-s del" onclick="return confirm('Уволить сотрудника?')">уволить</a>
                         <?php else: ?>
                             <span class = "disabled">блок</span>
                         <?php endif; ?>
