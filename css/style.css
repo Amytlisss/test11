@@ -127,3 +127,70 @@ h1 {
     font-size: 16px;
 }
 
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group{
+    padding: 5px 10px;
+    margin: 0 2px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+}
+
+.btn-submit{
+    background-color: #9fcaa9;
+    color: #155724;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.btn-submit:hover,
+.btn-cancel:hover {
+    opacity: 0.8;
+}

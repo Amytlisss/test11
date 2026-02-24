@@ -142,22 +142,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for = "birth_date">Дата рождения </label>
-                    <input type="text" id = "birth_date" name="birth_date" value="<?=htmlspecialchars($_POST['birth_date'] ?? '') ?>" required>
+                    <input type="date" id = "birth_date" name="birth_date" value="<?=htmlspecialchars($_POST['birth_date'] ?? '') ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for = "passport">Паспорт (серия номер) </label>
-                    <input type="text" id = "passport" name="passport" value="<?=htmlspecialchars($_POST['passport'] ?? '') ?>" required>
+                    <input type="text" id="passport" name="passport" 
+                           placeholder="1234 567890" 
+                           value="<?=htmlspecialchars($_POST['passport'] ?? '') ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for = "phone">Телефон </label>
-                    <input type="text" id = "phone" name="phone" value="<?=htmlspecialchars($_POST['phone'] ?? '') ?>" required>
+                    <input type="tel" id = "phone" name="phone" placeholder="+7 (999) 123-45-67" value="<?=htmlspecialchars($_POST['phone'] ?? '') ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for = "address">Адрес проживания </label>
-                    <input type="text" id = "address" name="address" value="<?=htmlspecialchars($_POST['address'] ?? '') ?>" required>
+                    <textarea id="address" name="address" required><?= htmlspecialchars($_POST['address'] ?? '') ?></textarea>
                 </div>
 
                 <div class="form-group">
@@ -188,12 +190,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <div class="form-group">
                     <label for="salary">Зарплата (₽) </label>
-                    <input type="text" id="salary" name="salary" step="0.01" min="0" value="<?= htmlspecialchars($_POST['salary'] ?? '') ?>" required>
+                    <input type="number" id="salary" name="salary" step="0.01" min="0" value="<?= htmlspecialchars($_POST['salary'] ?? '') ?>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="hire_date">Дата приема </label>
-                    <input type="text" id="hire_date" name="hire_date" 
+                    <input type="date" id="hire_date" name="hire_date" 
                            value="<?= htmlspecialchars($_POST['hire_date'] ?? '') ?>" required>
                 </div>
 
