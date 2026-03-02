@@ -73,6 +73,7 @@
                             <a href="delete.php?id=<?= $employee['id'] ?>" class="btn-s del" onclick="return confirm('Уволить сотрудника?')">уволить</a>
                         <?php else: ?>
                             <span class = "disabled">блок</span>
+                            <a href="restore.php?id=<?= $employee['id'] ?>" class="btn-s rest" onclick="return confirm('Восстановить сотрудника?')">восстановить</a>
                         <?php endif; ?>
                     </td>
                 </tr>
