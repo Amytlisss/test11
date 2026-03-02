@@ -13,7 +13,7 @@
             <a href="add.php" class="btn btn-add">+ Добавить сотрудника</a>
         </div>
         <table class="e-table">
-            <caption>Сотрудники</caption>
+            <caption><h1>Сотрудники</h1></caption>
             <thead>
                 <tr>
                     <th>ФИО</th>
@@ -64,13 +64,13 @@
                         <?php if ($employee['fired']): ?>
                             <span class="badge fired">Уволен</span>
                         <?php else: ?>
-                            <span class= "badge not-fired"></span>
+                            <span class= "badge not-fired">Работает</span>
                         <?php endif; ?>
                     </td>
                     <td class = "actions-s">
                         <?php if (!$employee['fired']): ?>
                             <a href="edit.php?id=<?=  $employee['id'] ?>" class ="btn-s edit">ред</a>
-                            <a href = "delite.php?id<?= $employee['id'] ?>" class = "btn-s del" onclick="return confirm('Уволить сотрудника?')">уволить</a>
+                            <a href="delete.php?id=<?= $employee['id'] ?>" class="btn-s del" onclick="return confirm('Уволить сотрудника?')">уволить</a>
                         <?php else: ?>
                             <span class = "disabled">блок</span>
                         <?php endif; ?>
