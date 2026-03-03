@@ -118,6 +118,11 @@ h1 {
     color:#f1e0e2;
 }
 
+.btn-s.rest {
+    background-color: #83e6c5;
+    color: #021d02;
+}
+
 .btn-s:hover {
     opacity: 0.8;
 }
