@@ -17,6 +17,7 @@ try {
     $stmt = $pdo->prepare("SELECT * FROM employees WHERE id = ?");
     $stmt->execute([$id]);
     $employee = $stmt->fetch();
+    
     if ($employee['fired']) {
         header('Location: index.php?error=Нельзя редактировать уволенного сотрудника');
         exit;

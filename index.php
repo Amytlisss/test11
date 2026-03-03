@@ -12,6 +12,21 @@
         <div class="actions">
             <a href="add.php" class="btn btn-add">+ Добавить сотрудника</a>
         </div>
+
+        <div class="search-container">
+            <form method="GET" action="index.php" class="search-form">
+                <input type="text" 
+                       name="search" 
+                       placeholder="Введите ФИО для поиска..." 
+                       value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
+                       class="search-input">
+                <button type="submit" class="btn-search">Найти</button>
+                <?php if (!empty($_GET['search'])): ?>
+                    <a href="index.php" class="btn-clear">Очистить</a>
+                <?php endif; ?>
+            </form>
+        </div>
+
         <table class="e-table">
             <h1>Сотрудники</h1>
             <thead>
@@ -32,6 +47,8 @@
                 <?php
                 require_once 'config/database.php';
 
+                $search = $_GET['search'] ?? '';
+
                 $query = "
                     SELECT
                     e.*,
@@ -41,14 +58,26 @@
                     FROM employees e
                     LEFT JOIN departments d ON e.department_id = d.id
                     LEFT JOIN positions p ON e.position_id = p.id
-                    ORDER BY e.last_name, e.first_name
                     ";
 
-                $stmt = $pdo->query($query);
+                if (!empty($search)) {
+                    $query .= " WHERE CONCAT(e.last_name, ' ', e.first_name, ' ', COALESCE(e.patronymic, '')) ILIKE :search";
+                }
+
+                $query .= " ORDER BY e.last_name, e.first_name";
+
+                $stmt = $pdo->prepare($query);
+                if (!empty($search)) {
+                    $searchTerm = "%$search%";
+                    $stmt->bindParam(':search', $searchTerm);
+                }
+                
+                $stmt->execute();
                 $employees = $stmt->fetchALL();
 
-                foreach ($employees as $employee):
-                    $rowClass = $employee['fired'] ? 'fired' : '';
+                if (count($employees) > 0):
+                    foreach ($employees as $employee):
+                        $rowClass = $employee['fired'] ? 'fired' : '';
                 ?>
 
                 <tr class="<?= $rowClass ?>" >
@@ -77,9 +106,18 @@
                         <?php endif; ?>
                     </td>
                 </tr>
-                <?php endforeach; ?>
+                <?php endforeach; 
+                else:
+                ?>
+                <tr>
+                    <td colspan="10" class="no-results">По вашему запросу ничего не найдено</td>
+                </tr>
+                <?php endif; ?>
             </tbody>
         </table>
+        <div class="record-count">
+            Найдено записей: <?= count($employees) ?>
+        </div>
     </div>
 </body>
 </html>
