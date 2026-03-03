@@ -17,6 +17,10 @@ try {
     $stmt = $pdo->prepare("SELECT * FROM employees WHERE id = ?");
     $stmt->execute([$id]);
     $employee = $stmt->fetch();
+    if ($employee['fired']) {
+        header('Location: index.php?error=Нельзя редактировать уволенного сотрудника');
+        exit;
+    }
     
     if (!$employee) {
         header('Location: index.php?error=Сотрудник не найден');
@@ -43,27 +47,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hire_date = $_POST['hire_date'] ?? '';
     
     if (empty($last_name)) {
-        $errors[] = 'Запольните поле "Фамилия"';
+        $errors[] = 'Заполните поле "Фамилия"';
     }
     
     if (empty($first_name)) {
-        $errors[] = 'Запольните поле "Имя"';
+        $errors[] = 'Заполните поле "Имя"';
     }
     
     if (empty($birth_date)) {
-        $errors[] = 'Запольните поле "Дата рождения"';
+        $errors[] = 'Заполните поле "Дата рождения"';
     }
     
     if (empty($passport)) {
-        $errors[] = 'Запольните поле "Паспортные данные"';
+        $errors[] = 'Заполните поле "Паспортные данные"';
     }
     
     if (empty($phone)) {
-        $errors[] = 'Запольните поле "Телефон"';
+        $errors[] = 'Заполните поле "Телефон"';
     }
     
     if (empty($address)) {
-        $errors[] = 'Запольните поле "Адрес"';
+        $errors[] = 'Заполните поле "Адрес"';
     }
     
     if (empty($department_id)) {

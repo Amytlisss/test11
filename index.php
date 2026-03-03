@@ -13,7 +13,7 @@
             <a href="add.php" class="btn btn-add">+ Добавить сотрудника</a>
         </div>
         <table class="e-table">
-            <caption><h1>Сотрудники</h1></caption>
+            <h1>Сотрудники</h1>
             <thead>
                 <tr>
                     <th>ФИО</th>
@@ -51,7 +51,7 @@
                     $rowClass = $employee['fired'] ? 'fired' : '';
                 ?>
 
-                <tr class="<?= $rowClass ?>" ?>
+                <tr class="<?= $rowClass ?>" >
                     <td><?=  htmlspecialchars($employee['full_name']) ?></td>
                     <td><?=  htmlspecialchars($employee['birth_date']) ?></td>
                     <td><?=  htmlspecialchars($employee['passport']) ?></td>
