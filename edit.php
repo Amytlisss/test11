@@ -133,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Редактирование сотрудника</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/imask"></script>
 </head>
 <body>
     <div class="container">
@@ -234,5 +235,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            IMask(document.getElementById('phone'), {
+                mask: '+{7} (000) 000-00-00'
+            });
+    
+            IMask(document.getElementById('passport'), {
+                mask: '0000 000000'
+            });
+        });
+    </script>
 </body>
 </html>
