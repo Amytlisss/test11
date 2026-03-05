@@ -13,6 +13,49 @@
             <a href="add.php" class="btn btn-add">+ Добавить сотрудника</a>
         </div>
 
+         <div class="filters-container">
+            <form method="GET" action="index.php" class="filters-form">
+                <input type="hidden" name="search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+        <div class="filter-group">
+                    <label for="department">Отдел:</label>
+                    <select name="department" id="department" class="filter-select">
+                        <option value="">Все отделы</option>
+                        <?php
+                        require_once 'config/database.php';
+                        $depts = $pdo->query("SELECT * FROM departments ORDER BY name")->fetchAll();
+                        foreach ($depts as $dept):
+                            $selected = ($_GET['department'] ?? '') == $dept['id'] ? 'selected' : '';
+                        ?>
+                            <option value="<?= $dept['id'] ?>" <?= $selected ?>>
+                                <?= htmlspecialchars($dept['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="position">Должность:</label>
+                    <select name="position" id="position" class="filter-select">
+                        <option value="">Все должности</option>
+                        <?php
+                        $positions = $pdo->query("SELECT * FROM positions ORDER BY name")->fetchAll();
+                        foreach ($positions as $pos):
+                            $selected = ($_GET['position'] ?? '') == $pos['id'] ? 'selected' : '';
+                        ?>
+                            <option value="<?= $pos['id'] ?>" <?= $selected ?>>
+                                <?= htmlspecialchars($pos['name']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn-filter">Применить фильтры</button>
+                    <a href="index.php" class="btn-filter-clear">Сбросить всё</a>
+                </div>
+            </form>
+        </div>
+
         <div class="search-container">
             <form method="GET" action="index.php" class="search-form">
                 <input type="text" 
@@ -20,6 +63,13 @@
                        placeholder="Введите ФИО для поиска..." 
                        value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
                        class="search-input">
+                <?php if (!empty($_GET['department'])): ?>
+                    <input type="hidden" name="department" value="<?= htmlspecialchars($_GET['department']) ?>">
+                <?php endif; ?>
+                <?php if (!empty($_GET['position'])): ?>
+                    <input type="hidden" name="position" value="<?= htmlspecialchars($_GET['position']) ?>">
+                <?php endif; ?>
+
                 <button type="submit" class="btn-search">Найти</button>
                 <?php if (!empty($_GET['search'])): ?>
                     <a href="index.php" class="btn-clear">Очистить</a>
@@ -45,6 +95,9 @@
             </thead>
             <tbody>
                 <?php
+                $search = $_GET['search'] ?? '';
+                $department_id = $_GET['department'] ?? '';
+                $position_id = $_GET['position'] ?? '';
                 require_once 'config/database.php';
 
                 $search = $_GET['search'] ?? '';
@@ -58,19 +111,30 @@
                     FROM employees e
                     LEFT JOIN departments d ON e.department_id = d.id
                     LEFT JOIN positions p ON e.position_id = p.id
+                    WHERE 1=1
                     ";
+
+                $params = [];
 
                 if (!empty($search)) {
                     $query .= " WHERE CONCAT(e.last_name, ' ', e.first_name, ' ', COALESCE(e.patronymic, '')) ILIKE :search";
                 }
 
+                if (!empty($department_id)) {
+                    $query .= " AND e.department_id = :department_id";
+                    $params['department_id'] = $department_id;
+                }
+
+                if (!empty($position_id)) {
+                    $query .= " AND e.position_id = :position_id";
+                    $params['position_id'] = $position_id;
+                }
+
                 $query .= " ORDER BY e.last_name, e.first_name";
 
                 $stmt = $pdo->prepare($query);
-                if (!empty($search)) {
-                    $searchTerm = "%$search%";
-                    $stmt->bindParam(':search', $searchTerm);
-                }
+                $stmt->execute($params);
+                $employees = $stmt->fetchAll();
                 
                 $stmt->execute();
                 $employees = $stmt->fetchALL();
