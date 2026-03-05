@@ -100,8 +100,6 @@
                 $position_id = $_GET['position'] ?? '';
                 require_once 'config/database.php';
 
-                $search = $_GET['search'] ?? '';
-
                 $query = "
                     SELECT
                     e.*,
@@ -117,7 +115,8 @@
                 $params = [];
 
                 if (!empty($search)) {
-                    $query .= " WHERE CONCAT(e.last_name, ' ', e.first_name, ' ', COALESCE(e.patronymic, '')) ILIKE :search";
+                    $query .= " AND CONCAT(e.last_name, ' ', e.first_name, ' ', COALESCE(e.patronymic, '')) ILIKE :search";
+                    $params['search'] = "%$search%";
                 }
 
                 if (!empty($department_id)) {
@@ -135,9 +134,6 @@
                 $stmt = $pdo->prepare($query);
                 $stmt->execute($params);
                 $employees = $stmt->fetchAll();
-                
-                $stmt->execute();
-                $employees = $stmt->fetchALL();
 
                 if (count($employees) > 0):
                     foreach ($employees as $employee):
